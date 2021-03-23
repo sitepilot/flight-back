@@ -1,4 +1,4 @@
-# Runtimes
+# Runtime
 
 Docker runtime images for running and developing web applications in containers.
 
