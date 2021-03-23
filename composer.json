@@ -1,0 +1,24 @@
+{
+    "name": "laravel/sail",
+    "description": "Docker powered production runtimes and a (local) development environment for WordPress and Laravel.",
+    "keywords": ["wordpress", "laravel", "docker"],
+    "license": "GPL-3.0-or-later",
+    "support": {
+        "issues": "https://github.com/sitepilot/flight/issues",
+        "source": "https://github.com/sitepilot/flight"
+    },
+    "authors": [
+        {
+            "name": "Nick Jansen",
+            "email": "n.jansen@sitepilot.io"
+        }
+    ],
+    "bin": [
+        "bin/flight"
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
