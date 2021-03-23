@@ -90,7 +90,7 @@ EXPOSE 80
 EXPOSE 443
 EXPOSE 8080
 
-WORKDIR /opt/runtime/app
+WORKDIR /opt/runtime/app/public
 
 ENTRYPOINT ["/opt/runtime/bin/entrypoint"]
 
