@@ -1,0 +1,23 @@
+name: build-1.0
+
+on:
+  push:
+    paths:
+      - "1.0/**"
+      - ".github/workflows/build-1.0.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build and deploy Docker image
+        run: |
+          if [[ ${GITHUB_REF##*/} = "main" ]]; then export DOCKER_TAG=1.0; else export DOCKER_TAG=1.0-${GITHUB_REF##*/}; fi
+          echo ${{ secrets.CR_DEPLOY_TOKEN }} | docker login ghcr.io -u ${{ secrets.CR_DEPLOY_USER }} --password-stdin
+
+          cd 1.0
+
+          docker build . --tag ghcr.io/sitepilot/runtime:$DOCKER_TAG
+          docker push ghcr.io/sitepilot/runtime:$DOCKER_TAG

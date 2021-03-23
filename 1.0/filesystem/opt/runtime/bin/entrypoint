@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -a
+set -e
+set -o pipefail
+
+usermod -u ${RUNTIME_USER_ID} www-data >/dev/null
+groupmod -g ${RUNTIME_GROUP_ID} www-data >/dev/null
+
+FILES=/opt/runtime/config/php.d/*
+for f in $FILES
+do
+  link="$(basename -- $f)"
+  ln -sf $f /usr/local/lsws/lsphp74/etc/php/7.4/mods-available/$link
+done
+
+if [ -d /opt/runtime/bin/entrypoint.d ] ; then
+    run-parts --exit-on-error /opt/runtime/bin/entrypoint.d
+fi
+
+exec "$@"
