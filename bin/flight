@@ -14,14 +14,13 @@ esac
 
 if [ "$MACHINE" == "UNKNOWN" ]; then
     echo "Unsupported operating system [$(uname -s)]. Flight supports macOS, Linux, and Windows (WSL2)." >&2
-
     exit 1
 fi
 
 # Define environment variables...
-export RUNTIME_SERVICE=${RUNTIME_SERVICE:-"runtime"}
-export RUNTIME_USER_ID=${RUNTIME_USER_ID:-$UID}
-export RUNTIME_GROUP_ID=${RUNTIME_GROUP_ID:-$(id -g)}
+export FLIGHT_SERVICE=${FLIGHT_SERVICE:-"runtime"}
+export FLIGHT_USER_ID=${FLIGHT_USER_ID:-$UID}
+export FLIGHT_GROUP_ID=${FLIGHT_GROUP_ID:-$(id -g)}
 
 if [ "$MACHINE" == "linux" ]; then
     export SEDCMD="sed -i"
@@ -40,7 +39,7 @@ fi
 PSRESULT="$(docker-compose ps -q)"
 
 if docker-compose ps | grep 'Exit'; then
-    echo -e "${WHITE}Shutting down old runtime processes...${NC}" >&2
+    echo -e "${WHITE}Shutting down old Flight processes...${NC}" >&2
 
     docker-compose down > /dev/null 2>&1
 
@@ -53,10 +52,9 @@ fi
 
 # Function that outputs Flight is not running...
 function flight_is_not_running {
-    echo -e "${WHITE}Runtime is not running.${NC}" >&2
+    echo -e "${WHITE}Flight is not running.${NC}" >&2
     echo "" >&2
-    echo -e "${WHITE}You may Flight using the following commands:${NC} './flight up' or './flight up -d'" >&2
-
+    echo -e "${WHITE}You may start Flight using the following commands:${NC} './flight up' or './flight up -d'" >&2
     exit 1
 }
 
@@ -73,7 +71,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 php "$@"
         else
             flight_is_not_running
@@ -86,7 +84,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 composer "$@"
         else
             flight_is_not_running
@@ -99,21 +97,21 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 php artisan "$@"
         else
             flight_is_not_running
         fi
     
-    # Proxy Flight commands to the "flight" binary on the application container...
-    elif [ "$1" == "flight" ] || [ "$1" == "autop" ]; then
+    # Proxy WPCLI commands to the "wp" binary on the application container...
+    elif [ "$1" == "wp" ] || [ "$1" == "wpcli" ]; then
         shift 1
 
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
-                php flight "$@"
+                "$FLIGHT_SERVICE" \
+                wp "$@"
         else
             flight_is_not_running
         fi
@@ -125,7 +123,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 php artisan test "$@"
         else
             flight_is_not_running
@@ -140,7 +138,7 @@ if [ $# -gt 0 ]; then
                 -u www-data \
                 -e "APP_URL=http://laravel.test" \
                 -e "DUSK_DRIVER_URL=http://selenium:4444/wd/hub" \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 php artisan dusk "$@"
         else
             flight_is_not_running
@@ -155,7 +153,7 @@ if [ $# -gt 0 ]; then
                 -u www-data \
                 -e "APP_URL=http://laravel.test" \
                 -e "DUSK_DRIVER_URL=http://selenium:4444/wd/hub" \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 php artisan dusk:fails "$@"
         else
             flight_is_not_running
@@ -168,7 +166,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 php artisan tinker
         else
             flight_is_not_running
@@ -181,7 +179,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 node "$@"
         else
             flight_is_not_running
@@ -194,7 +192,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 npm "$@"
         else
             flight_is_not_running
@@ -207,7 +205,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 npx "$@"
         else
             flight_is_not_running
@@ -220,7 +218,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 yarn "$@"
         else
             flight_is_not_running
@@ -257,7 +255,7 @@ if [ $# -gt 0 ]; then
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
                 -u www-data \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 bash
         else
             flight_is_not_running
@@ -269,7 +267,7 @@ if [ $# -gt 0 ]; then
 
         if [ "$EXEC" == "yes" ]; then
             docker-compose exec \
-                "$RUNTIME_SERVICE" \
+                "$FLIGHT_SERVICE" \
                 bash
         else
             flight_is_not_running
