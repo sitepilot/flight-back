@@ -1,7 +1,11 @@
 {
-    "name": "laravel/sail",
+    "name": "sitepilot/flight",
     "description": "Docker powered production runtimes and a (local) development environment for WordPress and Laravel.",
-    "keywords": ["wordpress", "laravel", "docker"],
+    "keywords": [
+        "wordpress",
+        "laravel",
+        "docker"
+    ],
     "license": "GPL-3.0-or-later",
     "support": {
         "issues": "https://github.com/sitepilot/flight/issues",
