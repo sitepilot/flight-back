@@ -14,7 +14,7 @@ COPY build /
 
 # ----- Packages ----- #
 
-RUN install-packages gpg-agent software-properties-common supervisor curl wget nano libnss3-tools
+RUN install-packages gpg-agent software-properties-common supervisor curl wget nano libnss3-tools less
 
 # ----- Openlitespeed & PHP ----- #
 
