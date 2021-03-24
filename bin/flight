@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 UNAMEOUT="$(uname -s)"
 
 WHITE='\033[1;37m'
@@ -31,9 +33,11 @@ fi
 # Ensure that Docker is running...
 if ! docker info > /dev/null 2>&1; then
     echo -e "${WHITE}Docker is not running.${NC}" >&2
-
     exit 1
 fi
+
+# Create flight network
+docker network create flight > /dev/null 2>&1 || :
 
 # Determine if Flight is currently up...
 PSRESULT="$(docker-compose ps -q)"
@@ -269,6 +273,17 @@ if [ $# -gt 0 ]; then
             docker-compose exec \
                 "$FLIGHT_SERVICE" \
                 bash
+        else
+            flight_is_not_running
+        fi
+
+    elif [ "$1" == "proxy-reload" ] ; then
+        shift 1
+
+        if [ "$EXEC" == "yes" ]; then
+            docker-compose exec \
+                "$FLIGHT_SERVICE" \
+                bash -c "caddy reload --config /opt/runtime/config/caddy.conf --adapter caddyfile"
         else
             flight_is_not_running
         fi
