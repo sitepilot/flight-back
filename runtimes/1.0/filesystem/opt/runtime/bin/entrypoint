@@ -14,8 +14,12 @@ do
   ln -sf $f /usr/local/lsws/lsphp74/etc/php/7.4/mods-available/$link
 done
 
-if [ "proxy" == "$FLIGHT_ENVIRONMENT" ]; then 
+if [ "proxy" == "$RUNTIME_TYPE" ]; then 
   rm -f /opt/runtime/config/supervisor.d/litespeed.conf
+fi
+
+if [ "site" == "$RUNTIME_TYPE" ]; then 
+  rm -f /opt/runtime/config/supervisor.d/caddy.conf
 fi
 
 if [ -d /opt/runtime/bin/entrypoint.d ] ; then
