@@ -6,18 +6,12 @@ services:
     build:
       context: ./runtimes/1.0
       dockerfile: Dockerfile
-    image: sitepilot/runtime:1.0
+    image: ghcr.io/sitepilot/runtime:1.0
     environment:
       RUNTIME_USER_ID: "${FLIGHT_USER_ID:-10000}"
-      RUNTIME_GROUP_ID: "${FLIGHT_GROUP_ID:-10000}"
-    ports:
-      - "${RUNTIME_HTTP_PORT:-8080}:80"
-      - "${RUNTIME_HTTPS_PORT:-8443}:443"
-    volumes:
-      - ".:/opt/runtime/app/public"
     networks:
       - flight
 
 networks:
   flight:
-    driver: bridge
+    external: true
