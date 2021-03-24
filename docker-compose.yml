@@ -7,6 +7,9 @@ services:
       context: ./runtimes/1.0
       dockerfile: Dockerfile
     image: ghcr.io/sitepilot/runtime:1.0
+    ports:
+      - "8080:80"
+      - "8443:443"
     environment:
       RUNTIME_USER_ID: "${FLIGHT_USER_ID:-10000}"
     networks:
