@@ -14,6 +14,10 @@ do
   ln -sf $f /usr/local/lsws/lsphp74/etc/php/7.4/mods-available/$link
 done
 
+if [ "proxy" == "$FLIGHT_ENVIRONMENT" ]; then 
+  rm -f /opt/runtime/config/supervisor.d/litespeed.conf
+fi
+
 if [ -d /opt/runtime/bin/entrypoint.d ] ; then
     run-parts --exit-on-error /opt/runtime/bin/entrypoint.d
 fi
