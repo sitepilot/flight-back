@@ -34,8 +34,8 @@ You can override the default runtime configuration by mounting configuration fil
 
 ### Caddy
 * `/opt/runtime/config/caddy.conf`: the default Caddy server configuration.
-* `/opt/runtime/config/caddy.d/default.conf`: the default Caddy vhost  configuration.
-* `/opt/runtime/config/caddy.d/<filename>.conf`: additional Caddy vhost configurations (autoloaded).
+* `/opt/runtime/config/proxy.d/default.conf`: the default Caddy vhost  configuration.
+* `/opt/runtime/config/proxy.d/<filename>.conf`: additional Caddy vhost configurations (autoloaded).
 
 ### PHP
 * `/opt/runtime/config/php.d/99-runtime.ini`: the default PHP configuration.
